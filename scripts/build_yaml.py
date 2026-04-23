@@ -25,7 +25,11 @@ with open('rules-src/rules.list', 'r', encoding='utf-8') as f:
         if in_custom and line and not line.startswith('#'):
             parts = line.split('|')
             if len(parts) >= 2:
-                custom_rules.append({'name': parts[0].strip(), 'url': parts[1].strip()})
+                name = parts[0].strip()
+                # 舍弃 parts[1] 的外部链接
+                # 直接拼装私有仓库中刚才 merge.sh 处理并生成的对应文件链接
+                local_repo_url = f"{base_url}/rules/{name}.list"
+                custom_rules.append({'name': name, 'url': local_repo_url})
 
 # 21: 按照优先级拼装 ruleset 字符串
 ini_content = "[custom]\n;国内-国外分流\n\n;规则集定义\n"
