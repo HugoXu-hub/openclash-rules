@@ -31,7 +31,6 @@ DOMAIN-KEYWORD,sci-hub
 DOMAIN-KEYWORD,skydrive
 DOMAIN-KEYWORD,spotify
 DOMAIN-KEYWORD,telegram
-DOMAIN-KEYWORD,time
 DOMAIN-KEYWORD,ttvnw
 DOMAIN-KEYWORD,twitter
 DOMAIN-KEYWORD,uk-live
@@ -348,7 +347,6 @@ DOMAIN-SUFFIX,anchorfree.com
 DOMAIN-SUFFIX,ancsconf.org
 DOMAIN-SUFFIX,andfaraway.net
 DOMAIN-SUFFIX,android-x86.org
-DOMAIN-SUFFIX,android.clients.google.com
 DOMAIN-SUFFIX,android.com
 DOMAIN-SUFFIX,androidapksfree.com
 DOMAIN-SUFFIX,androidify.com
@@ -1145,7 +1143,6 @@ DOMAIN-SUFFIX,clearharmony.net
 DOMAIN-SUFFIX,clearsurance.com
 DOMAIN-SUFFIX,clearwisdom.net
 DOMAIN-SUFFIX,clementine-player.org
-DOMAIN-SUFFIX,clients3.google.com
 DOMAIN-SUFFIX,cling.omy.sg
 DOMAIN-SUFFIX,clinica-tibet.ru
 DOMAIN-SUFFIX,clipconverter.cc
@@ -1220,8 +1217,6 @@ DOMAIN-SUFFIX,communitychoicecu.com
 DOMAIN-SUFFIX,comparitech.com
 DOMAIN-SUFFIX,compileheart.com
 DOMAIN-SUFFIX,compress.to
-DOMAIN-SUFFIX,connectivitycheck.android.com
-DOMAIN-SUFFIX,connectivitycheck.gstatic.com
 DOMAIN-SUFFIX,conoha.jp
 DOMAIN-SUFFIX,constitutionalism.solutions
 DOMAIN-SUFFIX,contactmagazine.net
@@ -4551,7 +4546,6 @@ DOMAIN-SUFFIX,poloniex.com
 DOMAIN-SUFFIX,polymarket.com
 DOMAIN-SUFFIX,polymer-project.org
 DOMAIN-SUFFIX,polymerhk.com
-DOMAIN-SUFFIX,pool.ntp.org
 DOMAIN-SUFFIX,poolbinance.com
 DOMAIN-SUFFIX,poolin.com
 DOMAIN-SUFFIX,popai.pro
@@ -5716,13 +5710,9 @@ DOMAIN-SUFFIX,tiktokv.com
 DOMAIN-SUFFIX,tiktokv.us
 DOMAIN-SUFFIX,tiltbrush.com
 DOMAIN-SUFFIX,timdir.com
-DOMAIN-SUFFIX,time-ios.apple.com
-DOMAIN-SUFFIX,time.android.com
 DOMAIN-SUFFIX,time.apple.com
 DOMAIN-SUFFIX,time.com
-DOMAIN-SUFFIX,time.google.com
-DOMAIN-SUFFIX,time.nist.gov
-DOMAIN-SUFFIX,time.windows.com
+DOMAIN-SUFFIX,time.window.com
 DOMAIN-SUFFIX,timesnownews.com
 DOMAIN-SUFFIX,timsah.com
 DOMAIN-SUFFIX,timtales.com
@@ -6829,7 +6819,7 @@ DOMAIN-SUFFIX,zyxel.com
 DOMAIN-SUFFIX,zzcartoon.com
 DOMAIN-SUFFIX,zzcloud.me
 DOMAIN-SUFFIX,zzux.com
-DST-PORT,123/UDP
+DOMAIN-WILDCARD,time.*.apple.com
 IP-CIDR,1.201.0.0/24,no-resolve
 IP-CIDR,103.2.28.0/24,no-resolve
 IP-CIDR,103.2.30.0/23,no-resolve
