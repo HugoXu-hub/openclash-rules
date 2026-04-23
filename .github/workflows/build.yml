@@ -1,0 +1,47 @@
+name: OpenClash Auto Build
+
+on:
+  schedule:
+    # 19: 北京时间凌晨2点执行 (UTC时间前一天 18:00)
+    - cron: '0 18 * * *'
+  # 允许随时手动触发编译
+  workflow_dispatch:
+
+permissions:
+  contents: write # 18: 赋予写入权限以便推送代码
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Run Bash Script (merge.sh)
+        run: |
+          chmod +x scripts/merge.sh
+          ./scripts/merge.sh
+
+      - name: Run Python Script (build_yaml.py)
+        run: python scripts/build_yaml.py
+
+      # 20: 以下清理过程文件的命令已注释，保留这些文件方便你 Debug
+      # 如果后续确认一切正常不需要 debug 了，取消下面这几行的注释即可
+      # - name: Clean up temporary files
+      #   run: |
+      #     rm -rf tmp/
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add rules/ tmp/ config/
+          # 如果文件有变更则提交，没有变更则跳过防止报错
+          git commit -m "Auto Update Rules & Config: $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          git push
