@@ -4,3 +4,4 @@ DOMAIN-SUFFIX,time.apple.com
 DOMAIN-WILDCARD,time.*.apple.com
 DOMAIN-SUFFIX,quickconnect.to
 DOMAIN-SUFFIX,quickconnect.cn
+DST-PORT,123/UDP
