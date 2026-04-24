@@ -10,16 +10,6 @@ mkdir -p tmp rules config
 #如果文件不存在，就自动创建一个空的白文件；如果文件已经存在，就只更新一下它的修改时间，不会破坏里面的内容。
 touch rules-src/Proxy_custom.list rules-src/Direct_custom.list rules-src/rules.list
 
-# 定义清理函数（去除 # 注释、空行、末尾空格，并去重）
-#clean_list() {
-#    local file=$1
-#    if [ -f "$file" ]; then
-#        sed -i 's/#.*//g' "$file"          # 删#号后面的注释
-#        sed -i 's/[[:space:]]*$//' "$file" # 删末尾空格
-#        sed -i '/^[[:space:]]*$/d' "$file" # 删空行
-#        sort -u "$file" -o "$file"         # 排序并去重
-#    fi
-#}
 
 clean_list() {
     local file=$1
@@ -94,7 +84,7 @@ clean_list "tmp/delete_direct.list"
 echo "=== 9. 收尾：转移 Custom 列表到 rules 目录 ==="
 cp rules-src/Proxy_custom.list rules/Proxy_custom.list
 cp rules-src/Direct_custom.list rules/Direct_custom.list
-#clean_list "rules/Proxy_custom.list"
-#clean_list "rules/Direct_custom.list"
+clean_list "rules/Proxy_custom.list"
+clean_list "rules/Direct_custom.list"
 
 echo "规则合并去重全部完成！"
