@@ -57,8 +57,7 @@ for rule in custom_rules:
 
 ini_content += "custom_proxy_group=🚀 节点选择`select`[]♻️ 自动选择`[]DIRECT`.*\n"
 ini_content += "custom_proxy_group=🟢 全球直连`select`[]DIRECT\n"
-ini_content += "custom_proxy_group=♻️ 自动选择`url-test`.*`http://www.gstatic.com/generate_204`300,,50`https://raw.githubusercontent.com/Vbaethon/HOMOMIX/main/Icon/Color/Large/YouTube.png\n\n"
-#ini_content += "custom_proxy_group=♻️ 自动选择`url-test`.*`http://www.gstatic.com/generate_204`300,,50\n\n"
+ini_content += "custom_proxy_group=♻️ 自动选择`url-test`.*`http://www.gstatic.com/generate_204`300,,50\n\n"
 
 # 核心开关
 ini_content += "enable_rule_generator=true\n"
