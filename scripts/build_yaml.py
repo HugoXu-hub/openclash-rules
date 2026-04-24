@@ -46,6 +46,7 @@ ini_content += f"ruleset=🟢 全球直连,{base_url}/rules/Direct.list\n"
 ini_content += f"ruleset=🚀 节点选择,{base_url}/rules/Proxy.list\n"
 
 # 兜底规则
+ini_content += "ruleset=🟢 全球直连,[]GEOSITE,CN\n"
 ini_content += "ruleset=🟢 全球直连,[]GEOIP,CN,no-resolve\n"
 ini_content += "ruleset=🚀 节点选择,[]FINAL\n\n\n"
 
