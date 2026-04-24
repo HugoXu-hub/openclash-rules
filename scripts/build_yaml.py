@@ -2,7 +2,7 @@
 # OpenClash config.ini 动态生成脚本
 # ==========================================
 import os
-import urllib.parse
+#import urllib.parse
 
 # 1. 从 GitHub Actions 环境变量获取仓库信息，拼装私有库 Raw 链接
 repo = os.environ.get('GITHUB_REPOSITORY', 'YourUsername/YourRepo')
