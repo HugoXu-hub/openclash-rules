@@ -1,72 +1,57 @@
 # ==========================================
-# OpenClash config.ini 动态生成脚本 (方案二：正则图标注入版)
+# OpenClash config.ini 动态生成脚本
 # ==========================================
 import os
 
-# 从 GitHub Actions 环境变量获取仓库信息
+# 从 GitHub Actions 环境变量获取仓库所有者、仓库名和分支，以便拼装私有库链接
 repo = os.environ.get('GITHUB_REPOSITORY', 'YourUsername/YourRepo')
 branch = os.environ.get('GITHUB_REF_NAME', 'main')
 base_url = f"https://raw.githubusercontent.com/{repo}/{branch}"
 
-# 图标映射字典 (用于生成 proxy_config 规则)
-icon_mapping = {
-    "YouTube": "https://raw.githubusercontent.com/Vbaethon/HOMOMIX/main/Icon/Color/Large/YouTube.png",
-    "Google": "https://raw.githubusercontent.com/Vbaethon/HOMOMIX/main/Icon/Color/Large/Google.png",
-    "Netflix": "https://raw.githubusercontent.com/Vbaethon/HOMOMIX/main/Icon/Color/Large/Netflix.png",
-    "Telegram": "https://raw.githubusercontent.com/Vbaethon/HOMOMIX/main/Icon/Color/Large/Telegram.png",
-    "Spotify": "https://raw.githubusercontent.com/Vbaethon/HOMOMIX/main/Icon/Color/Large/Spotify.png",
-    "Apple": "https://raw.githubusercontent.com/Vbaethon/HOMOMIX/main/Icon/Color/Large/Apple.png",
-    "AI": "https://raw.githubusercontent.com/Vbaethon/HOMOMIX/main/Icon/Color/Large/ChatGPT.png",
-    "🚀 节点选择": "https://raw.githubusercontent.com/Vbaethon/HOMOMIX/main/Icon/Color/Large/Proxy.png",
-    "🟢 全球直连": "https://raw.githubusercontent.com/Vbaethon/HOMOMIX/main/Icon/Color/Large/Direct.png",
-    "♻️ 自动选择": "https://raw.githubusercontent.com/Vbaethon/HOMOMIX/main/Icon/Color/Large/Auto.png"
-}
-
 custom_rules = []
 
-# 解析 rules-src/rules.list 中的 [Custom_link]
-if os.path.exists('rules-src/rules.list'):
-    with open('rules-src/rules.list', 'r', encoding='utf-8') as f:
-        in_custom = False
-        for line in f:
-            line = line.strip()
-            if line == '[Custom_link]':
-                in_custom = True
-                continue
-            elif line.startswith('['):
-                in_custom = False
-                continue
-            
-            if in_custom and line and not line.startswith('#'):
-                parts = line.split('|')
-                if len(parts) >= 2:
-                    name = parts[0].strip()
-                    local_repo_url = f"{base_url}/rules/{name}.list"
-                    custom_rules.append({'name': name, 'url': local_repo_url})
+# 16 & 17: 动态解析 rules-src/rules.list 中的 [Custom_link]
+with open('rules-src/rules.list', 'r', encoding='utf-8') as f:
+    in_custom = False
+    for line in f:
+        line = line.strip()
+        if line == '[Custom_link]':
+            in_custom = True
+            continue
+        elif line.startswith('['):
+            in_custom = False
+            continue
+        
+        if in_custom and line and not line.startswith('#'):
+            parts = line.split('|')
+            if len(parts) >= 2:
+                name = parts[0].strip()
+                # 舍弃 parts[1] 的外部链接
+                # 直接拼装私有仓库中刚才 merge.sh 处理并生成的对应文件链接
+                local_repo_url = f"{base_url}/rules/{name}.list"
+                custom_rules.append({'name': name, 'url': local_repo_url})
 
-# 1. 拼装 [custom] 头部和图标注入规则
-ini_content = "[custom]\n;--- 图标正则注入 ---\n"
-for name, icon_url in icon_mapping.items():
-    # 语法: proxy_config=正则匹配名称$图标链接
-    ini_content += f"proxy_config={name}${icon_url}\n"
-
-ini_content += "\n;--- 规则集定义 ---\n"
-
-# 2. 按照优先级拼装 ruleset
+# 21: 按照优先级拼装 ruleset 字符串
+ini_content = "[custom]\n;国内-国外分流\n\n;规则集定义\n"
+# 最高优先级：自定义直连和代理 (这里使用规则库内部路径的Raw链接)
 ini_content += f"ruleset=🟢 全球直连,{base_url}/rules/Direct_custom.list\n"
 ini_content += f"ruleset=🚀 节点选择,{base_url}/rules/Proxy_custom.list\n"
 
+# 动态浮动插入 Custom_link
 for rule in custom_rules:
     ini_content += f"ruleset={rule['name']},{rule['url']}\n"
 
+# 次级优先级：处理后的 Direct 和 Proxy
 ini_content += f"ruleset=🟢 全球直连,{base_url}/rules/Direct.list\n"
 ini_content += f"ruleset=🚀 节点选择,{base_url}/rules/Proxy.list\n"
+
+# 兜底规则
 ini_content += "ruleset=🟢 全球直连,[]GEOSITE,CN\n"
 ini_content += "ruleset=🟢 全球直连,[]GEOIP,CN,no-resolve\n"
 ini_content += "ruleset=🚀 节点选择,[]FINAL\n\n\n"
 
-# 3. 拼装策略组定义 (保持纯净，不带反引号占位)
-ini_content += ";--- 策略组定义 ---\n"
+# 拼装策略组定义
+ini_content += ";策略组定义\n"
 for rule in custom_rules:
     ini_content += f"custom_proxy_group={rule['name']}`select`[]♻️ 自动选择`[]DIRECT`.*\n"
 
@@ -80,7 +65,7 @@ ini_content += "overwrite_original_rules=true\n"
 
 # 输出到 config/config.ini
 os.makedirs('config', exist_ok=True)
-with open('config/config.ini', 'w', encoding='utf-8', newline='\n') as f:
+with open('config/config.ini', 'w', encoding='utf-8') as f:
     f.write(ini_content)
 
-print("==> config.ini (方案二：图标正则版) 配置文件生成完毕！")
+print("==> config.ini 配置文件生成完毕！")
