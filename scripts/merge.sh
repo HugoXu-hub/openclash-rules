@@ -11,15 +11,27 @@ mkdir -p tmp rules config
 touch rules-src/Proxy_custom.list rules-src/Direct_custom.list rules-src/rules.list
 
 # 定义清理函数（去除 # 注释、空行、末尾空格，并去重）
+#clean_list() {
+#    local file=$1
+#    if [ -f "$file" ]; then
+#        sed -i 's/#.*//g' "$file"          # 删#号后面的注释
+#        sed -i 's/[[:space:]]*$//' "$file" # 删末尾空格
+#        sed -i '/^[[:space:]]*$/d' "$file" # 删空行
+#        sort -u "$file" -o "$file"         # 排序并去重
+#    fi
+#}
+
 clean_list() {
     local file=$1
     if [ -f "$file" ]; then
-        sed -i 's/#.*//g' "$file"          # 删#号后面的注释
-        sed -i 's/[[:space:]]*$//' "$file" # 删末尾空格
-        sed -i '/^[[:space:]]*$/d' "$file" # 删空行
-        sort -u "$file" -o "$file"         # 排序并去重
+        sed -i 's/#.*//g' "$file"               # 删#号后面的注释
+        sed -i '/[Uu][Dd][Pp]/d' "$file"        # 彻底删除包含 udp (不区分大小写) 的行，就是只要有UDP字符，这一行就被删除。如果不想删除行就使用: sed -i 's/,udp//gI' "$file"  # 仅删掉 ,udp 关键字，保留该行其他内容
+        sed -i 's/[[:space:]]*$//' "$file"      # 删末尾空格
+        sed -i '/^[[:space:]]*$/d' "$file"      # 删空行
+        sort -u "$file" -o "$file"              # 排序并去重
     fi
 }
+
 
 # 清理链接中可能携带的乱码或引号
 clean_url() {
