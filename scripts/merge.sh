@@ -84,7 +84,7 @@ clean_list "tmp/delete_direct.list"
 echo "=== 9. 收尾：转移 Custom 列表到 rules 目录 ==="
 cp rules-src/Proxy_custom.list rules/Proxy_custom.list
 cp rules-src/Direct_custom.list rules/Direct_custom.list
-clean_list "rules/Proxy_custom.list"
-clean_list "rules/Direct_custom.list"
+#clean_list "rules/Proxy_custom.list"
+#clean_list "rules/Direct_custom.list"
 
 echo "规则合并去重全部完成！"
