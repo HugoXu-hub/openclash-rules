@@ -82,7 +82,15 @@ for rule in custom_rules:
     else:
         ini_content += f"{base_group_str}\n"
 
-# 固定基础策略组及其图标 (你可以按需替换这里的图标链接)
-ini_content += "custom_proxy_group=🚀 节点选择`select`[]♻️ 自动选择`[]DIRECT`.*
-http://googleusercontent.com/immersive_entry_chip/0
-http://googleusercontent.com/immersive_entry_chip/1
+ini_content += "custom_proxy_group=🚀 节点选择`select`[]♻️ 自动选择`[]DIRECT`.*\n"
+ini_content += "custom_proxy_group=🟢 全球直连`select`[]DIRECT\n"
+ini_content += "custom_proxy_group=♻️ 自动选择`url-test`.*`http://www.gstatic.com/generate_204`300,,50\n\n"
+
+# 核心开关
+ini_content += "enable_rule_generator=true\n"
+ini_content += "overwrite_original_rules=true\n"
+
+# 输出到 config/config.ini
+os.makedirs('config', exist_ok=True)
+with open('config/config.ini', 'w', encoding='utf-8') as f:
+    f.write(ini_content)
